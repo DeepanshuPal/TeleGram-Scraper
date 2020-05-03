@@ -11,7 +11,7 @@ import time
 re="\033[1;31m"
 gr="\033[1;32m"
 cy="\033[1;36m"
-SLEEP_TIME = 30
+SLEEP_TIME = 2
 
 class main():
 
@@ -64,8 +64,13 @@ class main():
                 users.append(user)
         print(gr+"[1] send sms by user ID\n[2] send sms by username ")
         mode = int(input(gr+"Input : "+re))
-         
-        message = input(gr+"[+] Enter Your Message : "+re)
+        message = '' 
+	
+	cwd = os.getcwd()
+	path = os.path .join(cwd,'post.txt')	
+	with open(path,'r') as f:
+		message = f.read()
+        
          
         for user in users:
             if mode == 2:
@@ -88,9 +93,10 @@ class main():
                 client.disconnect()
                 sys.exit()
             except Exception as e:
-                print(re+"[!] Error:", e)
+                print(re+"[!] Error:", int(str(e).split(' ')[3]))
                 print(re+"[!] Trying to continue...")
-                continue
+                time.sleep(int(str(e).split(' ')[3]))
+                
         client.disconnect()
         print("Done. Message sent to all users.")
 
